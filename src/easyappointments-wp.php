@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Easy!Appointments - WordPress Plugin
- * Plugin URI: http://easyappointments.org
+ * Plugin URI: https://easyappointments.org
  * Description: Easy!Appointments web scheduling integration with WordPress.
  * Version: 1.2.0
  * Author: A.Tselegidis
