@@ -39,5 +39,10 @@
     "jshint": "^2.10.2",
     "zip-dir": "^1.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "js-yaml": "^3.14.0",
+    "lodash.merge": "^4.6.2",
+    "lodash.template": "^4.5.0",
+    "minimist": "^1.2.5"
+  }
 }
