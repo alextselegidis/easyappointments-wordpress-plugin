@@ -8,3 +8,4 @@
 /wordpress/
 /vendor/
 /src/assets/**/*.min.*
+.DS_Store

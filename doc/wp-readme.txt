@@ -1,9 +1,9 @@
 === Easy!Appointments ===
 Contributors: alextselegidis
-Donate link: http://alextselegidis.com
+Donate link: https://alextselegidis.com
 Tags: agenda, appointments, scheduler, google-calendar, online-appointments, booking, service-providers, booking-system, online-meetings, reservation-system, scheduling-software, events, staff, customers, organization, efficiency
 Requires at least: 4.0.0
-Tested up to: 4.8
+Tested up to: 5.4.2
 Stable tag: trunk
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -60,6 +60,9 @@ If you encounter issues but you do not know what to do visit the official Easy!A
 https://groups.google.com/forum/#!categories/easy-appointments
 
 == Changelog ==
+
+= 1.2.0 =
+* Support for WordPress 5.x
 
 = 1.1.0 =
 * Installation will not try to create a new directory (avoiding permission problems).

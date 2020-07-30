@@ -10,8 +10,10 @@
 
 namespace EAWP\Core\Operations;
 
+use EAWP\Core\Operations\Interfaces\OperationInterface;
 use EAWP\Core\Plugin;
 use EAWP\Core\ValueObjects\LinkInformation;
+use function wp_enqueue_script;
 
 /**
  * Shortcode Class
@@ -21,27 +23,27 @@ use EAWP\Core\ValueObjects\LinkInformation;
  *
  * @todo Implement Shortcode Operation
  */
-class Shortcode implements \EAWP\Core\Operations\Interfaces\OperationInterface
+class Shortcode implements OperationInterface
 {
     /**
      * Easy!Appointments WordPress Plugin Instance
      *
-     * @var \EAWP\Core\Plugin
+     * @var Plugin
      */
     protected $plugin;
 
     /**
      * Easy!Appointments Installation LinkInformation
      *
-     * @var \EAWP\Core\ValueObjects\LinkInformation
+     * @var LinkInformation
      */
     protected $linkInformation;
 
     /**
      * Class Constructor
      *
-     * @param \EAWP\Core\Plugin $plugin Easy!Appointments WordPress Plugin Instance
-     * @param \EAWP\Core\ValueObjects\LinkInformation $linkInformation Easy!Appointments Link Information
+     * @param Plugin $plugin Easy!Appointments WordPress Plugin Instance
+     * @param LinkInformation $linkInformation Easy!Appointments Link Information
      */
     public function __construct(Plugin $plugin, LinkInformation $linkInformation, array $attributes)
     {
@@ -61,7 +63,7 @@ class Shortcode implements \EAWP\Core\Operations\Interfaces\OperationInterface
     public function invoke()
     {
         $file = (WP_DEBUG) ? 'iframe.js' : 'iframe.min.js';
-        \wp_enqueue_script(md5($file), plugins_url('../../assets/js/' . $file, __FILE__));
+        wp_enqueue_script(md5($file), plugins_url('../../assets/js/' . $file, __FILE__));
 
         $width = (isset($this->attributes['width'])) ? $this->attributes['width'] : '100%';
         $height = (isset($this->attributes['height'])) ? $this->attributes['height'] : '700px';

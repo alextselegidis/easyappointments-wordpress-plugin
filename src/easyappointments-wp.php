@@ -5,7 +5,7 @@
  * Description: Easy!Appointments web scheduling integration with WordPress.
  * Version: 1.2.0
  * Author: A.Tselegidis
- * Author URI: http://alextselegidis.com
+ * Author URI: https://alextselegidis.com
  * Text Domain: eawp
  * License: GPLv3
  */

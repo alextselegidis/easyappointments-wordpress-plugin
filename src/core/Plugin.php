@@ -10,11 +10,21 @@
 
 namespace EAWP\Core;
 
+use db;
 use EAWP\Core\Exceptions\AjaxException;
+use EAWP\Core\Operations\Install;
+use EAWP\Core\Operations\Link;
+use EAWP\Core\Operations\Shortcode;
+use EAWP\Core\Operations\Unlink;
+use EAWP\Core\Operations\VerifyState;
 use EAWP\Core\ValueObjects\LinkInformation;
 use EAWP\Core\ValueObjects\Path;
 use EAWP\Core\ValueObjects\Url;
+use Exception;
 use wpdb;
+use function get_option;
+use function wp_create_nonce;
+use function wp_send_json;
 
 /**
  * EAWP Plugin Class
@@ -62,8 +72,8 @@ class Plugin
         $this->route->action('plugins_loaded', function () use ($plugin, $route) {
             load_plugin_textdomain('eawp', false, dirname(plugin_basename(__DIR__)) . '/assets/lang');
 
-            $jsData = array(
-                'Lang' => array(
+            $jsData = [
+                'Lang' => [
                     'InstallationSuccessMessage' =>
                         __('Easy!Appointments files were installed successfully! Navigate to your installation URL '
                             . 'complete the configuration of the application.', 'eawp'),
@@ -80,14 +90,14 @@ class Plugin
                         __('An unexpected error occurred in file %file% (line %line%): %message%', 'eawp'),
                     'AjaxFailureMessage' =>
                         __('The AJAX request could not be completed due to an unexpected error: %message%', 'eawp')
-                ),
-                'Ajax' => array(
-                    'nonce' => \wp_create_nonce('eawp')
-                )
-            );
+                ],
+                'Ajax' => [
+                    'nonce' => wp_create_nonce('eawp')
+                ]
+            ];
 
             $route->view('Easy!Appointments', 'Easy!Appointments',
-                'eawp-settings', 'admin', array('plugin.js', 'admin.js', 'verify-state.js', 'style.css'), $jsData);
+                'eawp-settings', 'admin', ['plugin.js', 'admin.js', 'verify-state.js', 'style.css'], $jsData);
         });
 
         $this->route->ajax('install', function () use ($plugin) {
@@ -95,10 +105,10 @@ class Plugin
                 $path = new Path(sanitize_text_field($_POST['path']));
                 $url = new Url(sanitize_text_field($_POST['url']));
                 $linkInformation = new LinkInformation($path, $url);
-                $operation = new \EAWP\Core\Operations\Install($plugin, $linkInformation);
+                $operation = new Install($plugin, $linkInformation);
                 $operation->invoke();
-            } catch (\Exception $ex) {
-                \wp_send_json(AjaxException::response($ex));
+            } catch (Exception $ex) {
+                wp_send_json(AjaxException::response($ex));
             }
         });
 
@@ -107,10 +117,10 @@ class Plugin
                 $path = new Path(sanitize_text_field($_POST['path']));
                 $url = new Url(sanitize_text_field($_POST['url']));
                 $linkInformation = new LinkInformation($path, $url);
-                $operation = new \EAWP\Core\Operations\Link($plugin, $linkInformation);
+                $operation = new Link($plugin, $linkInformation);
                 $operation->invoke();
-            } catch (\Exception $ex) {
-                \wp_send_json(AjaxException::response($ex));
+            } catch (Exception $ex) {
+                wp_send_json(AjaxException::response($ex));
             }
         });
 
@@ -121,10 +131,10 @@ class Plugin
                 $removeFiles = filter_var($_POST['removeFiles'], FILTER_VALIDATE_BOOLEAN);
                 $removeDbTables = filter_var($_POST['removeDbTables'], FILTER_VALIDATE_BOOLEAN);
                 $linkInformation = new LinkInformation($path, $url);
-                $operation = new \EAWP\Core\Operations\Unlink($plugin, $linkInformation, $removeFiles, $removeDbTables);
+                $operation = new Unlink($plugin, $linkInformation, $removeFiles, $removeDbTables);
                 $operation->invoke();
-            } catch (\Exception $ex) {
-                \wp_send_json(AjaxException::response($ex));
+            } catch (Exception $ex) {
+                wp_send_json(AjaxException::response($ex));
             }
         });
 
@@ -133,25 +143,25 @@ class Plugin
                 $path = new Path(sanitize_text_field($_POST['path']));
                 $url = new Url(sanitize_text_field($_POST['url']));
                 $linkInformation = new LinkInformation($path, $url);
-                $operation = new \EAWP\Core\Operations\VerifyState($plugin, $linkInformation);
+                $operation = new VerifyState($plugin, $linkInformation);
                 $operation->invoke();
-            } catch (\Exception $ex) {
-                \wp_send_json(AjaxException::response($ex));
+            } catch (Exception $ex) {
+                wp_send_json(AjaxException::response($ex));
             }
         });
 
         $this->route->shortcode('easyappointments', function ($attributes) use ($plugin) {
-            $path = \get_option('eawp_path');
-            $url = \get_option('eawp_url');
+            $path = get_option('eawp_path');
+            $url = get_option('eawp_url');
 
             if (empty($path) || empty($url)) {
                 return; // There are no options set so do not proceed with the operation.
             }
 
-            $attributes = (is_array($attributes)) ? $attributes : array();
+            $attributes = (is_array($attributes)) ? $attributes : [];
 
             $linkInformation = new LinkInformation(new Path($path), new Url($url));
-            $operation = new \EAWP\Core\Operations\Shortcode($plugin, $linkInformation, $attributes);
+            $operation = new Shortcode($plugin, $linkInformation, $attributes);
             return $operation->invoke();
         });
     }
@@ -159,7 +169,7 @@ class Plugin
     /**
      * Get WordPress Database Object.
      *
-     * @return \db
+     * @return db
      */
     public function getDatabase()
     {

@@ -13,6 +13,11 @@ namespace EAWP\Core\Operations;
 use EAWP\Core\Operations\Interfaces\OperationInterface;
 use EAWP\Core\Plugin;
 use EAWP\Core\ValueObjects\LinkInformation;
+use Exception;
+use InvalidArgumentException;
+use function delete_option;
+use function reset;
+use function rmdir;
 
 /**
  * Unlink Operation
@@ -26,14 +31,14 @@ class Unlink implements OperationInterface
     /**
      * Plugin Instance
      *
-     * @var \EAWP\Core\Plugin
+     * @var Plugin
      */
     protected $plugin;
 
     /**
      * Easy!Appointments Link Information
      *
-     * @var \EAWP\Core\ValueObjects\LinkInformation
+     * @var LinkInformation
      */
     protected $linkInformation;
 
@@ -54,8 +59,8 @@ class Unlink implements OperationInterface
     /**
      * Class Constructor
      *
-     * @param \EAWP\Core\Plugin $plugin Easy!Appointments WordPress plugin instance.
-     * @param \EAWP\Core\ValueObjects\LinkInformation $linkInformation Easy!Appointments Link Information
+     * @param Plugin $plugin Easy!Appointments WordPress plugin instance.
+     * @param LinkInformation $linkInformation Easy!Appointments Link Information
      * @param bool $removeFiles (optional) Whether to remove the Easy!Appointments files.
      * @param bool $removeDbTables (optional) Whether to remove the Easy!Appointments database tables.
      */
@@ -64,14 +69,15 @@ class Unlink implements OperationInterface
         LinkInformation $linkInformation,
         $removeFiles = false,
         $removeDbTables = false
-    ) {
+    )
+    {
         if (!is_bool($removeFiles)) {
-            throw new \InvalidArgumentException('Invalid argument provided (expected bool got "'
+            throw new InvalidArgumentException('Invalid argument provided (expected bool got "'
                 . gettype($removeFiles) . '"): ' . $removeFiles);
         }
 
         if (!is_bool($removeDbTables)) {
-            throw new \InvalidArgumentException('Invalid argument provided (expected bool got "'
+            throw new InvalidArgumentException('Invalid argument provided (expected bool got "'
                 . gettype($removeDbTables) . '"): ' . $removeDbTables);
         }
 
@@ -107,8 +113,8 @@ class Unlink implements OperationInterface
      */
     protected function _removeOptions()
     {
-        \delete_option('eawp_path');
-        \delete_option('eawp_url');
+        delete_option('eawp_path');
+        delete_option('eawp_url');
     }
 
     /**
@@ -136,7 +142,7 @@ class Unlink implements OperationInterface
     protected function removeFiles()
     {
         if (!is_writable((string)$this->linkInformation->getPath())) {
-            throw new \Exception('Cannot remove installation files, permission denied.');
+            throw new Exception('Cannot remove installation files, permission denied.');
         }
 
         $entries = [
@@ -150,7 +156,7 @@ class Unlink implements OperationInterface
 
         $path = (string)$this->linkInformation->getPath();
 
-        foreach($entries as $entry) {
+        foreach ($entries as $entry) {
             $this->recursiveDelete($path . '/' . $entry);
         }
 
@@ -182,8 +188,8 @@ class Unlink implements OperationInterface
                     }
                 }
             }
-            @\reset($objects);
-            @\rmdir($dir);
+            @reset($objects);
+            @rmdir($dir);
         }
     }
 }

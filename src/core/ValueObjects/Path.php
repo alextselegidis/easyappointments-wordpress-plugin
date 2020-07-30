@@ -10,6 +10,8 @@
 
 namespace EAWP\Core\ValueObjects;
 
+use InvalidArgumentException;
+
 /**
  * Path Value Object
  *
@@ -27,12 +29,12 @@ class Path
      *
      * @param string $path Provide the final destination path of the application (even if it doesn't exist yet).
      *
-     * @throws \InvalidArgumentException When provided path is not valid.
+     * @throws InvalidArgumentException When provided path is not valid.
      */
     public function __construct($path)
     {
         if (!is_string($path) || empty($path) || !file_exists($path)) {
-            throw new \InvalidArgumentException('Invalid $path argument provided: ' . print_r($path, true));
+            throw new InvalidArgumentException('Invalid $path argument provided: ' . print_r($path, true));
         }
 
         $this->path = rtrim($path, '/');

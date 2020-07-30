@@ -1,6 +1,6 @@
 <?php
 /* ----------------------------------------------------------------------------
- * Easy!Appointments - WordPress Plugin 
+ * Easy!Appointments - WordPress Plugin
  *
  * @license GPLv3
  * @copyright A.Tselegidis (C) 2017
@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------------------- */
 
 namespace EAWP\Core\ValueObjects;
+
+use InvalidArgumentException;
 
 /**
  * URL Value Object
@@ -27,12 +29,12 @@ class Url
      *
      * @param string $url Provide the application base URL to be used for configuring E!A.
      *
-     * @throws \InvalidArgumentException When an invalid URL is provided.
+     * @throws InvalidArgumentException When an invalid URL is provided.
      */
     public function __construct($url)
     {
         if (!is_string($url) || empty($url) || !filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new \InvalidArgumentException('Invalid $url argument provided: ' . print_r($url, true));
+            throw new InvalidArgumentException('Invalid $url argument provided: ' . print_r($url, true));
         }
 
         $this->url = rtrim($url, '/');

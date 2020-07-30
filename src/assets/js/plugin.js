@@ -29,8 +29,8 @@ window.EAWPPlugin = window.EAWPPlugin || {};
 
         $('.eawp').prepend(
             '<div class="error notification">'
-                + '<span class="dashicons dashicons-no"></span>'
-                + message
+            + '<span class="dashicons dashicons-no"></span>'
+            + message
             + '</div>'
         );
     }

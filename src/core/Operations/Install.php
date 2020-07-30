@@ -13,6 +13,9 @@ namespace EAWP\Core\Operations;
 use EAWP\Core\Operations\Interfaces\OperationInterface;
 use EAWP\Core\Plugin;
 use EAWP\Core\ValueObjects\LinkInformation;
+use Exception;
+use ZipArchive;
+use function add_option;
 
 /**
  * Install Class
@@ -68,14 +71,14 @@ class Install implements OperationInterface
         $this->downloadFiles();
         $this->unzipFiles();
         $this->configure();
-        \add_option('eawp_path', (string)$this->linkInformation->getPath());
-        \add_option('eawp_url', (string)$this->linkInformation->getUrl());
+        add_option('eawp_path', (string)$this->linkInformation->getPath());
+        add_option('eawp_url', (string)$this->linkInformation->getUrl());
     }
 
     /**
      * Download the latest Easy!Appointments files to required destination.
      *
-     * @throws \Exception If the destination directory is not writable.
+     * @throws Exception If the destination directory is not writable.
      */
     protected function downloadFiles()
     {
@@ -85,7 +88,7 @@ class Install implements OperationInterface
         $integrations = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
-        foreach($integrations['easyappointments'] as $package) {
+        foreach ($integrations['easyappointments'] as $package) {
             if ($package['current'] === true) {
                 $zip = file_get_contents($package['url']);
                 file_put_contents((string)$this->linkInformation->getPath() . '/easyappointments.zip', $zip);
@@ -100,11 +103,11 @@ class Install implements OperationInterface
     protected function unzipFiles()
     {
         $path = (string)$this->linkInformation->getPath() . '/easyappointments.zip';
-        $zip = new \ZipArchive;
+        $zip = new ZipArchive;
         $res = $zip->open($path);
 
         if (!$res) {
-            throw new \Exception('Could not open Easy!Appointments zip file.');
+            throw new Exception('Could not open Easy!Appointments zip file.');
         }
 
         $zip->extractTo((string)$this->linkInformation->getPath());
