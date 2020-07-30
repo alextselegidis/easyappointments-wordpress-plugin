@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const syncDir = require('gulp-directory-sync');
 const exec = require('child_process').execSync;
 const fs = require('fs-extra');
 const zip = require('zip-dir');
@@ -78,7 +77,7 @@ gulp.task('styles', function (done) {
 
 gulp.task('sync', function (done) {
     gulp.src('src')
-        .pipe(gulp.dest('./wordpress/wp-content/plugins/easyappointments-wp'));
+        .pipe(gulp.dest('./wordpress/wp-content/plugins/easyappointments'));
 
     done();
 });
@@ -87,14 +86,14 @@ gulp.task('sync', function (done) {
  * Development Task
  *
  * While developing the plugin this task will synchronize the changes made in the
- * "wp-content/plugins/easyappointments-wp" directory with the original plugin source
+ * "wp-content/plugins/easyappointments" directory with the original plugin source
  * files that are finally committed to the repository.
  */
 gulp.task('dev', gulp.series('styles', 'scripts', 'sync', function (done) {
     gulp.watch(['src/assets/js/*.js', '!src/assets/js/*.min.js'], gulp.series('scripts'));
     gulp.watch(['src/assets/css/*.css', '!src/assets/css/*.min.css'], gulp.series('styles'));
 
-    const path = './wordpress/wp-content/plugins/easyappointments-wp';
+    const path = './wordpress/wp-content/plugins/easyappointments';
 
     if (!fs.pathExistsSync(path)) {
         fs.mkdirSync(path);
@@ -109,17 +108,17 @@ gulp.task('dev', gulp.series('styles', 'scripts', 'sync', function (done) {
  * Create a ZIP package for the plugin.
  */
 gulp.task('build', gulp.series('styles', 'scripts', function (done) {
-    fs.removeSync('.tmp-package');
-    fs.removeSync('easyappointments-wp.zip');
-    fs.mkdirSync('.tmp-package');
-    fs.copySync('src', '.tmp-package/easyappointments-wp');
-    fs.copySync('LICENSE', '.tmp-package/easyappointments-wp/LICENSE');
-    fs.copySync('doc/wp-readme.txt', '.tmp-package/easyappointments-wp/readme.txt');
-    fs.copySync('screenshot-1.png', '.tmp-package/easyappointments-wp/screenshot-1.png');
-    fs.copySync('screenshot-2.png', '.tmp-package/easyappointments-wp/screenshot-2.png');
-    fs.copySync('screenshot-3.png', '.tmp-package/easyappointments-wp/screenshot-3.png');
-    fs.copySync('screenshot-4.png', '.tmp-package/easyappointments-wp/screenshot-4.png');
-    zip('.tmp-package', {saveTo: 'easyappointments-wp.zip'}, function (err, buffer) {
+    fs.removeSync('build');
+    fs.removeSync('easyappointments-wordpress-plugin.zip');
+    fs.mkdirSync('build');
+    fs.copySync('src', 'build/easyappointments');
+    fs.copySync('LICENSE', 'build/easyappointments/LICENSE');
+    fs.copySync('doc/wp-readme.txt', 'build/easyappointments/readme.txt');
+    fs.copySync('screenshot-1.png', 'build/easyappointments/screenshot-1.png');
+    fs.copySync('screenshot-2.png', 'build/easyappointments/screenshot-2.png');
+    fs.copySync('screenshot-3.png', 'build/easyappointments/screenshot-3.png');
+    fs.copySync('screenshot-4.png', 'build/easyappointments/screenshot-4.png');
+    zip('build', {saveTo: 'easyappointments-wordpress-plugin.zip'}, function (err, buffer) {
         if (err) {
             console.log('Zip Error', err);
         }
