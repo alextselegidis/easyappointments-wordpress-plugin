@@ -19,11 +19,11 @@ add_thickbox();
 
 <div class="wrap eawp">
     <div class="header">
-        <img class="logo" src="<?= plugins_url('assets/img/logo.png', __DIR__) ?>"
+        <img class="logo" src="<?php echo plugins_url('assets/img/logo.png', __DIR__) ?>"
              alt="Easy!Appointments Logo"/>
         <h1>
             Easy!Appointments - WordPress Plugin
-            <img class="loading hidden" src="<?= admin_url('images/wpspin_light-2x.gif') ?>">
+            <img class="loading hidden" src="<?php echo admin_url('images/wpspin_light-2x.gif') ?>">
         </h1>
     </div>
     <p>
@@ -60,12 +60,12 @@ add_thickbox();
                 <label for="path"><?php _e('Path', 'eawp') ?></label>
 
                 <input type="text" id="path" class="regular-text"
-                       value="<?= esc_html(get_option('eawp_path')) ?>"/>
+                       value="<?php echo esc_html(get_option('eawp_path')) ?>"/>
                 <p class="description">
-                    <?= _('Example') . ': ' . str_replace('\\', '/', ABSPATH . 'easyappointments'); ?>
+                    <?php echo __('Example') . ': ' . str_replace('\\', '/', ABSPATH . 'easyappointments'); ?>
                 </p>
                 <p class="description">
-                    <?= _('* Make sure that the target directory exists on the server and it\'s writable.') ?>
+                    <?php echo __('* Make sure that the target directory exists on the server and it\'s writable.') ?>
                 </p>
             </td>
         </tr>
@@ -74,9 +74,9 @@ add_thickbox();
                 <label for="url"><?php _e('URL', 'eawp') ?></label>
 
                 <input type="text" id="url" class="regular-text"
-                       value="<?= esc_html(get_option('eawp_url')) ?>"/>
+                       value="<?php echo esc_html(get_option('eawp_url')) ?>"/>
                 <p class="description">
-                    <?= _('Example') . ': ' . get_site_url() . '/easyappointments' ?>
+                    <?php echo __('Example') . ': ' . get_site_url() . '/easyappointments' ?>
                 </p>
             </td>
         </tr>
@@ -177,7 +177,7 @@ add_thickbox();
     <div id="about" style="display:none">
         <ul>
             <li>
-                <img src="<?= esc_url(plugins_url('assets/img/about.png', __DIR__)) ?>"
+                <img src="<?php echo esc_url(plugins_url('assets/img/about.png', __DIR__)) ?>"
                      alt="Easy!Appointments Plugin for WordPress">
             </li>
             <li>
@@ -206,6 +206,6 @@ add_thickbox();
 
     <em>
         <?php _e('For more information visit the official website of the project at ', 'eawp') ?>
-        <a href="http://easyappointments.org">http://easyappointments.org</a>.
+        <a href="https://easyappointments.org">https://easyappointments.org</a>.
     </em>
 </div>
