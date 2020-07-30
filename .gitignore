@@ -1,8 +1,8 @@
 /.idea/
-/.tmp-package/
 /.vagrant/
+/build/
 /doc/apigen/
-/easyappointments-wp.zip
+/easyappointments-wordpress-plugin.zip
 /node_modules/
 /test/Core/Operations/tmp-dir
 /wordpress/
