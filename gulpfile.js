@@ -76,7 +76,7 @@ gulp.task('styles', function (done) {
 });
 
 gulp.task('sync', function (done) {
-    gulp.src('src')
+    gulp.src('src/**/*')
         .pipe(gulp.dest('./wordpress/wp-content/plugins/easyappointments'));
 
     done();
