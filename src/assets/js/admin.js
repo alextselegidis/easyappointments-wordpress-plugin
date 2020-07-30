@@ -1,10 +1,12 @@
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - WordPress Plugin
  *
- * @license GPLv3
- * @copyright A.Tselegidis (C) 2017
- * @link http://easyappointments.org
- * @since v1.0.0
+ * @package     EasyAppointments
+ * @author      A.Tselegidis <alextselegidis@gmail.com>
+ * @copyright   Copyright (c) 2017 - 2020, Alex Tselegidis
+ * @license     http://opensource.org/licenses/GPL-3.0 - GPLv3
+ * @link        http://easyappointments.org
+ * @since       v1.0.0
  * ---------------------------------------------------------------------------- */
 
 /**
